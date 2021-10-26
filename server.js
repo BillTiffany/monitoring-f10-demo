@@ -34,8 +34,8 @@ app.post('/api/student', (req, res)=>{
         rollbar.error('No name given')
         res.status(400).send('must provide a name.')
     } else {
-        rollbar.error('student already exists')
-        res.status(400).send('that student already exists')
+        rollbar.warning('student already exists')
+        res.status(400).send('Warning: that student already exists')
     }
 
 })
