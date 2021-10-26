@@ -6,6 +6,11 @@ const app = express()
 
 const Rollbar = require('rollbar')
 
+let students = []
+
+app.use(rollbar.errorHandler())
+app.use(express.json())
+
 let rollbar = new Rollbar({
     accessToken: 'ec44c98d9f6d448690fe8a967482e9f7',
     captureUncaught: true,
@@ -16,6 +21,17 @@ app.get('/', (req,res)=>{
     res.sendFile(path.join(__dirname, '/public/index.html'))
     rollbar.info('html file served successfully.')
 })
+
+app.post('/api/student', (req, res)=>{
+    let {name} = req.body
+    name = name.trim()
+
+    students.push(name)
+    rollbar.log('Student added successfully', {author: 'Bill', type: 'manual entry'})
+
+    res.status(200).send(students)
+})
+
 
 const port = process.env.PORT || 4242
 
